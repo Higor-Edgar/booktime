@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 
+	"github.com/Higor-Edgar/booktime.git/internal/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -23,7 +24,7 @@ func loadDatabaseConfig() DBConfig {
 		Port:     "5432",
 		User:     "postgres",
 		Password: "postgres",
-		Database: "booktime",
+		Database: "booktime_db",
 	}
 }
 
@@ -39,6 +40,8 @@ func InitDatabase() *gorm.DB {
 	if err != nil {
 		panic("failed to connect to database: " + err.Error())
 	}
+
+	db.AutoMigrate(&domain.User{})
 
 	return db
 }
