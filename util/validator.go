@@ -21,9 +21,15 @@ func ValidateStruct(data interface{}) error {
 	case "required":
 		return errors.New(validationError.StructField() + " is required")
 	case "max":
-		return errors.New(validationError.StructField() + " must be less than " + validationError.Param())
+		err := errors.New(
+			validationError.StructField() + " must be less than " + validationError.Param() + " characters",
+		)
+		return err
 	case "min":
-		return errors.New(validationError.StructField() + " must be greater than " + validationError.Param())
+		err := errors.New(
+			validationError.StructField() + " must be greater than " + validationError.Param() + " characters",
+		)
+		return err
 	case "email":
 		return errors.New(validationError.StructField() + " must be a valid email address")
 	}
