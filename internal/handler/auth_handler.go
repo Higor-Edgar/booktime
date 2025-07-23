@@ -6,6 +6,7 @@ import (
 
 	"github.com/Higor-Edgar/booktime.git/internal/contract"
 	"github.com/Higor-Edgar/booktime.git/internal/service"
+	"github.com/Higor-Edgar/booktime.git/util"
 )
 
 type AuthHandler interface {
@@ -19,6 +20,11 @@ type authHandler struct {
 func (a *authHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 	var newUserDTO contract.NewUserDTO
 	if err := json.NewDecoder(r.Body).Decode(&newUserDTO); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := util.ValidateStruct(newUserDTO); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
